@@ -42,19 +42,19 @@ const PomodoroTimer = () => {
     : ((25 * 60 - timeLeft) / (25 * 60)) * 100;
 
   return (
-    <div className="w-full min-h-screen bg-white dark:bg-gray-900 p-8">
-      <div className="max-w-xl mx-auto space-y-12">
-        <div className="space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight">
+    <div className="w-full min-h-screen bg-white dark:bg-gray-900">
+      <div className="max-w-sm mx-auto p-6 space-y-8">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-semibold tracking-tight text-center">
             {isBreak ? "Break Time" : "Focus Time"}
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm text-muted-foreground text-center">
             {isBreak ? "Take a short break" : "Stay focused on your task"}
           </p>
         </div>
 
-        <div className="aspect-square max-w-md mx-auto relative flex items-center justify-center bg-gray-50 dark:bg-gray-800 rounded-full">
-          <div className="absolute inset-4">
+        <div className="aspect-square relative flex items-center justify-center bg-gray-50 dark:bg-gray-800 rounded-full">
+          <div className="absolute inset-2">
             <div
               className="w-full h-full rounded-full transition-all duration-200"
               style={{
@@ -63,39 +63,39 @@ const PomodoroTimer = () => {
             />
           </div>
           <div className="relative z-10">
-            <span className="text-7xl font-mono tabular-nums font-medium">
+            <span className="text-5xl font-mono tabular-nums font-medium">
               {formatTime(timeLeft)}
             </span>
           </div>
         </div>
 
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-3">
           <Button
             variant="outline"
             size="icon"
-            className="h-12 w-12 rounded-full"
+            className="h-9 w-9 rounded-full"
             onClick={resetTimer}
           >
-            <RotateCcw className="h-5 w-5" />
+            <RotateCcw className="h-4 w-4" />
           </Button>
           <Button
             size="icon"
-            className="h-12 w-12 rounded-full"
+            className="h-9 w-9 rounded-full"
             onClick={toggleTimer}
             variant={isRunning ? "outline" : "default"}
           >
             {isRunning ? (
-              <Pause className="h-5 w-5" />
+              <Pause className="h-4 w-4" />
             ) : (
-              <Play className="h-5 w-5" />
+              <Play className="h-4 w-4" />
             )}
           </Button>
           <Button
             variant="outline"
             size="icon"
-            className="h-12 w-12 rounded-full"
+            className="h-9 w-9 rounded-full"
           >
-            <Settings className="h-5 w-5" />
+            <Settings className="h-4 w-4" />
           </Button>
         </div>
       </div>

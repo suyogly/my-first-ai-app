@@ -28,9 +28,18 @@ const DashboardGrid = ({
 }: DashboardGridProps) => {
   return (
     <div className="w-full min-h-screen bg-white dark:bg-gray-900">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Main Todo Section */}
-        <div className="mb-8">
+      <div className="w-[80%] mx-auto px-8 py-6 flex gap-12">
+        {/* Quick Access - Left */}
+        <div className="w-64">
+          <QuickAccessWidget
+            folders={folders}
+            onFolderClick={onFolderClick}
+            onAddFolder={onAddFolder}
+          />
+        </div>
+
+        {/* Todo Section - Center */}
+        <div className="flex-1">
           <TodoWidget
             todos={todos}
             onAddTodo={onAddTodo}
@@ -40,13 +49,8 @@ const DashboardGrid = ({
           />
         </div>
 
-        {/* Quick Access and Recent Links in a grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <QuickAccessWidget
-            folders={folders}
-            onFolderClick={onFolderClick}
-            onAddFolder={onAddFolder}
-          />
+        {/* Recent Links - Right */}
+        <div className="w-64">
           <RecentLinksWidget links={links} />
         </div>
       </div>

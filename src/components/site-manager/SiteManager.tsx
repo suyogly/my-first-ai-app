@@ -43,19 +43,21 @@ const SiteManager = () => {
 
   return (
     <div className="w-full min-h-screen bg-white dark:bg-gray-900">
-      <div className="max-w-6xl mx-auto p-8 space-y-8">
-        <div className="space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight">Site Manager</h1>
-          <p className="text-muted-foreground">
+      <div className="max-w-4xl mx-auto p-6 space-y-6">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Site Manager
+          </h1>
+          <p className="text-sm text-muted-foreground">
             Organize and manage your web resources
           </p>
         </div>
 
-        <div className="flex gap-8">
+        <div className="flex gap-6">
           {/* Folders Sidebar */}
-          <div className="w-64 flex-shrink-0 space-y-4">
+          <div className="w-48 flex-shrink-0 space-y-3">
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-medium text-gray-500">FOLDERS</h2>
+              <h2 className="text-xs font-medium text-gray-500">FOLDERS</h2>
               <Button
                 variant="ghost"
                 size="icon"
@@ -68,9 +70,9 @@ const SiteManager = () => {
                     ]);
                   }
                 }}
-                className="h-8 w-8 rounded-full"
+                className="h-6 w-6 rounded-full"
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-3.5 w-3.5" />
               </Button>
             </div>
             <div className="space-y-0.5">
@@ -78,11 +80,11 @@ const SiteManager = () => {
                 <Button
                   key={folder.id}
                   variant="ghost"
-                  className={`w-full justify-start py-1.5 px-2 h-auto text-sm font-normal ${selectedFolder === folder.id ? "bg-gray-100 dark:bg-gray-800" : ""}`}
+                  className={`w-full justify-start py-1 px-2 h-auto text-sm font-normal ${selectedFolder === folder.id ? "bg-gray-100 dark:bg-gray-800" : ""}`}
                   onClick={() => setSelectedFolder(folder.id)}
                 >
                   <ChevronRight
-                    className={`h-4 w-4 mr-2 transition-transform ${selectedFolder === folder.id ? "rotate-90" : ""}`}
+                    className={`h-3.5 w-3.5 mr-1.5 transition-transform ${selectedFolder === folder.id ? "rotate-90" : ""}`}
                   />
                   {folder.name}
                 </Button>
@@ -91,13 +93,13 @@ const SiteManager = () => {
           </div>
 
           {/* Links Section */}
-          <div className="flex-1 space-y-6">
-            <div className="flex items-center gap-4">
+          <div className="flex-1 space-y-4">
+            <div className="flex items-center gap-3">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
                 <Input
                   placeholder="Search links..."
-                  className="pl-10 bg-gray-50 border-0"
+                  className="pl-8 h-8 text-sm bg-gray-50 border-0"
                 />
               </div>
               <Button
@@ -119,13 +121,14 @@ const SiteManager = () => {
                 }}
                 disabled={!selectedFolder}
                 variant="outline"
-                className="gap-2"
+                size="sm"
+                className="gap-1.5"
               >
-                <Plus className="h-4 w-4" /> Add Link
+                <Plus className="h-3.5 w-3.5" /> Add Link
               </Button>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1">
               {links
                 .filter((link) =>
                   selectedFolder ? link.folderId === selectedFolder : true,
@@ -133,20 +136,20 @@ const SiteManager = () => {
                 .map((link) => (
                   <div
                     key={link.id}
-                    className="group flex items-center justify-between py-3 border-b border-gray-100 last:border-0"
+                    className="group flex items-center justify-between py-2 hover:bg-gray-50 rounded-md px-2 -mx-2"
                   >
-                    <div className="flex items-center gap-3">
-                      <LinkIcon className="h-4 w-4 text-gray-400" />
+                    <div className="flex items-center gap-2">
+                      <LinkIcon className="h-3.5 w-3.5 text-gray-400" />
                       <div>
-                        <h3 className="font-medium">{link.title}</h3>
-                        <p className="text-sm text-gray-500">{link.url}</p>
+                        <h3 className="text-sm font-medium">{link.title}</h3>
+                        <p className="text-xs text-gray-500">{link.url}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                       {link.tags.map((tag) => (
                         <div
                           key={tag}
-                          className="px-2 py-1 bg-gray-50 rounded-full text-xs text-gray-600 flex items-center gap-1"
+                          className="px-1.5 py-0.5 bg-gray-50 rounded-full text-xs text-gray-600 flex items-center gap-1"
                         >
                           <Tag className="h-3 w-3" />
                           {tag}
@@ -155,7 +158,7 @@ const SiteManager = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="opacity-0 group-hover:opacity-100 transition-opacity rounded-full"
+                        className="opacity-0 group-hover:opacity-100 transition-opacity h-7 rounded-full text-xs"
                         onClick={() => window.open(link.url, "_blank")}
                       >
                         Open

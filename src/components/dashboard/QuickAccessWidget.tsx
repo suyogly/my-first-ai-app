@@ -28,30 +28,30 @@ const QuickAccessWidget = ({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Quick Access</h2>
+        <h2 className="text-sm font-medium">Folders</h2>
         <Button
           variant="ghost"
           size="icon"
           onClick={onAddFolder}
-          className="h-8 w-8 rounded-full"
+          className="h-6 w-6 rounded-full"
         >
-          <Plus className="h-4 w-4" />
+          <Plus className="h-3.5 w-3.5" />
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="space-y-1">
         {folders.map((folder) => (
-          <Button
+          <button
             key={folder.id}
-            variant="outline"
-            className="h-24 flex flex-col items-center justify-center gap-2 hover:bg-gray-50"
             onClick={() => onFolderClick(folder.id)}
+            className="w-full flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-md text-left group transition-colors"
           >
-            <Folder className="h-8 w-8 text-gray-600" />
-            <div className="text-sm font-medium">{folder.name}</div>
-            <div className="text-xs text-gray-500">
-              {folder.linkCount} links
-            </div>
-          </Button>
+            <Folder className="h-3.5 w-3.5 text-gray-400 group-hover:text-gray-600" />
+            <span className="text-sm truncate">
+              {folder.name.length > 15
+                ? `${folder.name.slice(0, 12)}...`
+                : folder.name}
+            </span>
+          </button>
         ))}
       </div>
     </div>
