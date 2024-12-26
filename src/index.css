@@ -1,76 +1,130 @@
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+@tailwind components;
+@tailwind utilities;
 
-  @layer base {
-    :root {
-      --background: 0 0% 100%;
-      --foreground: 222.2 84% 4.9%;
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap");
 
-      --card: 0 0% 100%;
-      --card-foreground: 222.2 84% 4.9%;
+@layer base {
+  :root {
+    /* Light mode - Warm earthy tones */
+    --warm-bg: 40 14% 95%; /* #f2efe9 */
+    --warm-fg: 35 12% 15%; /* #2d2925 - Darker for better contrast */
+    --warm-muted: 35 8% 85%; /* #e3e1dc */
+    --warm-accent: 35 15% 55%; /* #9e958a - More visible accent */
+    --warm-border: 35 10% 75%; /* #c9c5bd */
+    --warm-primary: 25 30% 40%; /* #7d6a5c - Richer primary */
 
-      --popover: 0 0% 100%;
-      --popover-foreground: 222.2 84% 4.9%;
+    --background: var(--warm-bg);
+    --foreground: var(--warm-fg);
 
-      --primary: 222.2 47.4% 11.2%;
-      --primary-foreground: 210 40% 98%;
+    --card: var(--warm-muted);
+    --card-foreground: var(--warm-fg);
 
-      --secondary: 210 40% 96.1%;
-      --secondary-foreground: 222.2 47.4% 11.2%;
+    --popover: var(--warm-bg);
+    --popover-foreground: var(--warm-fg);
 
-      --muted: 210 40% 96.1%;
-      --muted-foreground: 215.4 16.3% 46.9%;
+    --primary: var(--warm-primary);
+    --primary-foreground: var(--warm-bg);
 
-      --accent: 210 40% 96.1%;
-      --accent-foreground: 222.2 47.4% 11.2%;
+    --secondary: var(--warm-muted);
+    --secondary-foreground: var(--warm-fg);
 
-      --destructive: 0 84.2% 60.2%;
-      --destructive-foreground: 210 40% 98%;
+    --muted: var(--warm-muted);
+    --muted-foreground: var(--warm-accent);
 
-      --border: 214.3 31.8% 91.4%;
-      --input: 214.3 31.8% 91.4%;
-      --ring: 222.2 84% 4.9%;
+    --accent: var(--warm-accent);
+    --accent-foreground: var(--warm-fg);
 
-      --radius: 0.5rem;
-    }
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: var(--warm-bg);
 
-    .dark {
-      --background: 222.2 84% 4.9%;
-      --foreground: 210 40% 98%;
+    --border: var(--warm-border);
+    --input: var(--warm-border);
+    --ring: var(--warm-primary);
 
-      --card: 222.2 84% 4.9%;
-      --card-foreground: 210 40% 98%;
-
-      --popover: 222.2 84% 4.9%;
-      --popover-foreground: 210 40% 98%;
-
-      --primary: 210 40% 98%;
-      --primary-foreground: 222.2 47.4% 11.2%;
-
-      --secondary: 217.2 32.6% 17.5%;
-      --secondary-foreground: 210 40% 98%;
-
-      --muted: 217.2 32.6% 17.5%;
-      --muted-foreground: 215 20.2% 65.1%;
-
-      --accent: 217.2 32.6% 17.5%;
-      --accent-foreground: 210 40% 98%;
-
-      --destructive: 0 62.8% 30.6%;
-      --destructive-foreground: 210 40% 98%;
-
-      --border: 217.2 32.6% 17.5%;
-      --input: 217.2 32.6% 17.5%;
-      --ring: 212.7 26.8% 83.9%;
-    }
+    --radius: 0.5rem;
   }
 
-  @layer base {
-    * {
-      @apply border-border;
-    }
-    body {
-      @apply bg-background text-foreground;
-    }
+  .dark {
+    /* Dark mode - Deep warm tones */
+    --warm-bg: 200 25% 15%; /* #1a2429 */
+    --warm-fg: 35 15% 95%; /* #f3efea */
+    --warm-muted: 200 15% 25%; /* #2d3b44 */
+    --warm-accent: 200 20% 65%; /* #8cabc2 - Brighter accent */
+    --warm-border: 200 15% 30%; /* #364956 */
+    --warm-primary: 170 35% 55%; /* #45c4b1 - Brighter primary */
+
+    --background: var(--warm-bg);
+    --foreground: var(--warm-fg);
+
+    --card: var(--warm-muted);
+    --card-foreground: var(--warm-fg);
+
+    --popover: var(--warm-bg);
+    --popover-foreground: var(--warm-fg);
+
+    --primary: var(--warm-primary);
+    --primary-foreground: var(--warm-bg);
+
+    --secondary: var(--warm-muted);
+    --secondary-foreground: var(--warm-fg);
+
+    --muted: var(--warm-muted);
+    --muted-foreground: var(--warm-accent);
+
+    --accent: var(--warm-accent);
+    --accent-foreground: var(--warm-fg);
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: var(--warm-bg);
+
+    --border: var(--warm-border);
+    --input: var(--warm-border);
+    --ring: var(--warm-primary);
   }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Clock styles */
+.digital-clock {
+  font-family: "JetBrains Mono", monospace;
+  position: relative;
+  padding: 1.5rem 2.5rem;
+  border-radius: 1.25rem;
+  background: linear-gradient(145deg, hsl(var(--card)), hsl(var(--background)));
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+.digital-clock .time {
+  font-size: 3.5rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: hsl(var(--foreground));
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.digital-clock .date {
+  font-size: 0.875rem;
+  color: hsl(var(--accent));
+  margin-top: 0.5rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.dark .digital-clock {
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.2),
+    0 2px 4px -1px rgba(0, 0, 0, 0.1),
+    inset 0 2px 4px rgba(255, 255, 255, 0.05);
+}

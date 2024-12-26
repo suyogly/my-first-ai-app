@@ -27,10 +27,10 @@ const DashboardGrid = ({
   onReorderTodos = () => {},
 }: DashboardGridProps) => {
   return (
-    <div className="w-full min-h-screen bg-white dark:bg-gray-900">
-      <div className="w-[80%] mx-auto px-8 py-6 flex gap-12">
+    <div className="w-full min-h-screen bg-background">
+      <div className="w-[90%] mx-auto px-8 py-6 flex gap-12">
         {/* Quick Access - Left */}
-        <div className="w-64">
+        <div className="w-72 bg-card/50 p-6 rounded-xl border border-border/50">
           <QuickAccessWidget
             folders={folders}
             onFolderClick={onFolderClick}
@@ -39,7 +39,7 @@ const DashboardGrid = ({
         </div>
 
         {/* Todo Section - Center */}
-        <div className="flex-1">
+        <div className="flex-1 bg-card/50 p-6 rounded-xl border border-border/50">
           <TodoWidget
             todos={todos}
             onAddTodo={onAddTodo}
@@ -50,7 +50,7 @@ const DashboardGrid = ({
         </div>
 
         {/* Recent Links - Right */}
-        <div className="w-64">
+        <div className="w-72 bg-card/50 p-6 rounded-xl border border-border/50">
           <RecentLinksWidget links={links} />
         </div>
       </div>

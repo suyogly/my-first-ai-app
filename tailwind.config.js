@@ -51,6 +51,13 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Custom colors
+        sage: "hsl(var(--sage))",
+        cream: "hsl(var(--cream))",
+        stone: "hsl(var(--stone))",
+        clay: "hsl(var(--clay))",
+        moss: "hsl(var(--moss))",
+        sand: "hsl(var(--sand))",
       },
       borderRadius: {
         lg: "var(--radius)",

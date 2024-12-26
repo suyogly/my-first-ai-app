@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
 import { Globe } from "lucide-react";
 
 export interface RecentLink {
@@ -45,7 +44,7 @@ const RecentLinksWidget = ({
 }: RecentLinksWidgetProps) => {
   return (
     <div className="space-y-4">
-      <h2 className="text-sm font-medium">Recent Links</h2>
+      <h2 className="text-sm font-medium text-foreground">Recent Links</h2>
       <div className="grid grid-cols-2 gap-3">
         {links.map((link) => (
           <button
@@ -53,10 +52,10 @@ const RecentLinksWidget = ({
             onClick={() => window.open(link.url, "_blank")}
             className="flex flex-col items-center gap-1.5 group"
           >
-            <div className="h-8 w-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-gray-100 transition-colors">
-              <Globe className="h-3.5 w-3.5 text-gray-600" />
+            <div className="h-8 w-8 rounded-full bg-background flex items-center justify-center group-hover:bg-background/80 transition-colors">
+              <Globe className="h-3.5 w-3.5 text-primary" />
             </div>
-            <span className="text-xs text-center truncate w-full">
+            <span className="text-xs text-center truncate w-full text-muted-foreground group-hover:text-foreground">
               {link.title.length > 15
                 ? `${link.title.slice(0, 12)}...`
                 : link.title}

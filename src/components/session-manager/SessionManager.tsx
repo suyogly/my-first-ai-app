@@ -33,13 +33,13 @@ const SessionManager = () => {
   ]);
 
   return (
-    <div className="w-full min-h-screen bg-white dark:bg-gray-900">
+    <div className="w-full min-h-screen bg-background">
       <div className="max-w-3xl mx-auto p-6 space-y-6">
         <div className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             Reading Sessions
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-accent">
             Track your reading progress across different topics
           </p>
         </div>
@@ -66,7 +66,7 @@ const SessionManager = () => {
             }}
             variant="outline"
             size="sm"
-            className="gap-1.5"
+            className="gap-1.5 hover:bg-background/80"
           >
             <Plus className="h-3.5 w-3.5" /> New Session
           </Button>
@@ -76,18 +76,18 @@ const SessionManager = () => {
           {sessions.map((session) => (
             <div
               key={session.id}
-              className="group hover:bg-gray-50 rounded-md p-3 -mx-3"
+              className="group hover:bg-card/50 rounded-md p-3 -mx-3 border border-transparent hover:border-border/50 transition-all"
             >
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
                   <div className="flex items-center gap-1.5">
-                    <ChevronRight className="h-3.5 w-3.5 text-gray-400" />
-                    <h3 className="text-sm font-medium hover:underline cursor-pointer">
+                    <ChevronRight className="h-3.5 w-3.5 text-accent" />
+                    <h3 className="text-sm font-medium hover:text-primary cursor-pointer">
                       {session.title}
                     </h3>
                   </div>
-                  <p className="text-xs text-gray-500">{session.url}</p>
-                  <div className="flex items-center gap-3 text-xs text-gray-500">
+                  <p className="text-xs text-accent">{session.url}</p>
+                  <div className="flex items-center gap-3 text-xs text-accent">
                     <span className="flex items-center gap-1">
                       <BookOpen className="h-3 w-3" /> {session.topic}
                     </span>
@@ -99,14 +99,14 @@ const SessionManager = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity h-7 rounded-full text-xs"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity h-7 rounded-full text-xs hover:bg-background/80"
                   onClick={() => window.open(session.url, "_blank")}
                 >
                   Resume
                 </Button>
               </div>
               <div className="mt-3 space-y-1">
-                <div className="flex justify-between text-xs text-gray-500">
+                <div className="flex justify-between text-xs text-accent">
                   <span>Progress</span>
                   <span>{session.progress}%</span>
                 </div>

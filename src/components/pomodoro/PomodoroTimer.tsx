@@ -42,28 +42,28 @@ const PomodoroTimer = () => {
     : ((25 * 60 - timeLeft) / (25 * 60)) * 100;
 
   return (
-    <div className="w-full min-h-screen bg-white dark:bg-gray-900">
+    <div className="w-full min-h-screen bg-background">
       <div className="max-w-sm mx-auto p-6 space-y-8">
         <div className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight text-center">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground text-center">
             {isBreak ? "Break Time" : "Focus Time"}
           </h1>
-          <p className="text-sm text-muted-foreground text-center">
+          <p className="text-sm text-accent text-center">
             {isBreak ? "Take a short break" : "Stay focused on your task"}
           </p>
         </div>
 
-        <div className="aspect-square relative flex items-center justify-center bg-gray-50 dark:bg-gray-800 rounded-full">
+        <div className="aspect-square relative flex items-center justify-center bg-card/50 rounded-full border border-border/50">
           <div className="absolute inset-2">
             <div
               className="w-full h-full rounded-full transition-all duration-200"
               style={{
-                background: `conic-gradient(rgb(0 0 0 / 0.1) ${progress}%, transparent ${progress}%)`,
+                background: `conic-gradient(hsl(var(--primary)) ${progress}%, transparent ${progress}%)`,
               }}
             />
           </div>
           <div className="relative z-10">
-            <span className="text-5xl font-mono tabular-nums font-medium">
+            <span className="text-5xl font-mono tabular-nums font-medium text-foreground">
               {formatTime(timeLeft)}
             </span>
           </div>
@@ -73,7 +73,7 @@ const PomodoroTimer = () => {
           <Button
             variant="outline"
             size="icon"
-            className="h-9 w-9 rounded-full"
+            className="h-9 w-9 rounded-full hover:bg-background/80"
             onClick={resetTimer}
           >
             <RotateCcw className="h-4 w-4" />
@@ -93,7 +93,7 @@ const PomodoroTimer = () => {
           <Button
             variant="outline"
             size="icon"
-            className="h-9 w-9 rounded-full"
+            className="h-9 w-9 rounded-full hover:bg-background/80"
           >
             <Settings className="h-4 w-4" />
           </Button>

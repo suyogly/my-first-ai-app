@@ -42,13 +42,13 @@ const SiteManager = () => {
   const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
 
   return (
-    <div className="w-full min-h-screen bg-white dark:bg-gray-900">
+    <div className="w-full min-h-screen bg-background">
       <div className="max-w-4xl mx-auto p-6 space-y-6">
         <div className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             Site Manager
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-accent">
             Organize and manage your web resources
           </p>
         </div>
@@ -57,7 +57,7 @@ const SiteManager = () => {
           {/* Folders Sidebar */}
           <div className="w-48 flex-shrink-0 space-y-3">
             <div className="flex items-center justify-between">
-              <h2 className="text-xs font-medium text-gray-500">FOLDERS</h2>
+              <h2 className="text-xs font-medium text-accent">FOLDERS</h2>
               <Button
                 variant="ghost"
                 size="icon"
@@ -70,7 +70,7 @@ const SiteManager = () => {
                     ]);
                   }
                 }}
-                className="h-6 w-6 rounded-full"
+                className="h-6 w-6 rounded-full hover:bg-background/80"
               >
                 <Plus className="h-3.5 w-3.5" />
               </Button>
@@ -80,7 +80,7 @@ const SiteManager = () => {
                 <Button
                   key={folder.id}
                   variant="ghost"
-                  className={`w-full justify-start py-1 px-2 h-auto text-sm font-normal ${selectedFolder === folder.id ? "bg-gray-100 dark:bg-gray-800" : ""}`}
+                  className={`w-full justify-start py-1 px-2 h-auto text-sm font-normal rounded-md ${selectedFolder === folder.id ? "bg-card/50 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-background/80"}`}
                   onClick={() => setSelectedFolder(folder.id)}
                 >
                   <ChevronRight
@@ -96,10 +96,10 @@ const SiteManager = () => {
           <div className="flex-1 space-y-4">
             <div className="flex items-center gap-3">
               <div className="relative flex-1">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-accent" />
                 <Input
                   placeholder="Search links..."
-                  className="pl-8 h-8 text-sm bg-gray-50 border-0"
+                  className="pl-8 h-8 text-sm bg-card/50 border-border/50"
                 />
               </div>
               <Button
@@ -122,7 +122,7 @@ const SiteManager = () => {
                 disabled={!selectedFolder}
                 variant="outline"
                 size="sm"
-                className="gap-1.5"
+                className="gap-1.5 hover:bg-background/80"
               >
                 <Plus className="h-3.5 w-3.5" /> Add Link
               </Button>
@@ -136,20 +136,22 @@ const SiteManager = () => {
                 .map((link) => (
                   <div
                     key={link.id}
-                    className="group flex items-center justify-between py-2 hover:bg-gray-50 rounded-md px-2 -mx-2"
+                    className="group flex items-center justify-between py-2 px-3 hover:bg-card/50 rounded-md -mx-3 transition-colors border border-transparent hover:border-border/50"
                   >
                     <div className="flex items-center gap-2">
-                      <LinkIcon className="h-3.5 w-3.5 text-gray-400" />
+                      <LinkIcon className="h-3.5 w-3.5 text-accent" />
                       <div>
-                        <h3 className="text-sm font-medium">{link.title}</h3>
-                        <p className="text-xs text-gray-500">{link.url}</p>
+                        <h3 className="text-sm font-medium text-foreground">
+                          {link.title}
+                        </h3>
+                        <p className="text-xs text-accent">{link.url}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       {link.tags.map((tag) => (
                         <div
                           key={tag}
-                          className="px-1.5 py-0.5 bg-gray-50 rounded-full text-xs text-gray-600 flex items-center gap-1"
+                          className="px-1.5 py-0.5 bg-background/80 rounded-full text-xs text-accent flex items-center gap-1"
                         >
                           <Tag className="h-3 w-3" />
                           {tag}
@@ -158,7 +160,7 @@ const SiteManager = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="opacity-0 group-hover:opacity-100 transition-opacity h-7 rounded-full text-xs"
+                        className="opacity-0 group-hover:opacity-100 transition-opacity h-7 rounded-full text-xs hover:bg-background/80"
                         onClick={() => window.open(link.url, "_blank")}
                       >
                         Open

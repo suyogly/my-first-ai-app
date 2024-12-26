@@ -28,12 +28,12 @@ const QuickAccessWidget = ({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium">Folders</h2>
+        <h2 className="text-sm font-medium text-foreground">Folders</h2>
         <Button
           variant="ghost"
           size="icon"
           onClick={onAddFolder}
-          className="h-6 w-6 rounded-full"
+          className="h-6 w-6 rounded-full hover:bg-background/80"
         >
           <Plus className="h-3.5 w-3.5" />
         </Button>
@@ -43,10 +43,10 @@ const QuickAccessWidget = ({
           <button
             key={folder.id}
             onClick={() => onFolderClick(folder.id)}
-            className="w-full flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-md text-left group transition-colors"
+            className="w-full flex items-center gap-2 px-2 py-1.5 hover:bg-background/80 rounded-md text-left group transition-colors"
           >
-            <Folder className="h-3.5 w-3.5 text-gray-400 group-hover:text-gray-600" />
-            <span className="text-sm truncate">
+            <Folder className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary" />
+            <span className="text-sm text-muted-foreground group-hover:text-foreground truncate">
               {folder.name.length > 15
                 ? `${folder.name.slice(0, 12)}...`
                 : folder.name}

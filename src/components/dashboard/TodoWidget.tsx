@@ -62,7 +62,9 @@ const TodoWidget: React.FC<TodoWidgetProps> = ({
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Tasks</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+          Tasks
+        </h1>
         <p className="text-sm text-muted-foreground">
           {activeTodos.length} tasks remaining
         </p>
@@ -74,13 +76,13 @@ const TodoWidget: React.FC<TodoWidgetProps> = ({
           value={newTodoText}
           onChange={(e) => setNewTodoText(e.target.value)}
           placeholder="Add a new task..."
-          className="flex-1 h-9 bg-transparent border-0 border-b rounded-none focus-visible:ring-0 focus-visible:border-black px-0 text-sm"
+          className="flex-1 h-9 bg-transparent border-0 border-b rounded-none focus-visible:ring-0 focus-visible:border-primary px-0 text-sm"
         />
         <Button
           type="submit"
           variant="ghost"
           size="icon"
-          className="h-7 w-7 rounded-full hover:bg-gray-100"
+          className="h-7 w-7 rounded-full hover:bg-background/80"
         >
           <Plus className="h-4 w-4" />
         </Button>
@@ -102,22 +104,24 @@ const TodoWidget: React.FC<TodoWidgetProps> = ({
                 className="mr-2 cursor-grab opacity-0 group-hover:opacity-100 transition-opacity"
                 aria-label="Drag to reorder"
               >
-                <GripVertical className="h-3.5 w-3.5 text-gray-400" />
+                <GripVertical className="h-3.5 w-3.5 text-muted-foreground" />
               </button>
 
               <input
                 type="checkbox"
                 checked={todo.completed}
                 onChange={() => onToggleTodo(todo.id)}
-                className="mr-2 h-3.5 w-3.5 rounded-sm border border-gray-300 text-black focus:ring-0"
+                className="mr-2 h-3.5 w-3.5 rounded-sm border border-muted-foreground text-primary focus:ring-primary"
               />
 
-              <span className="flex-1 text-sm">{todo.text}</span>
+              <span className="flex-1 text-sm text-foreground">
+                {todo.text}
+              </span>
 
               <Button
                 variant="ghost"
                 size="icon"
-                className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 rounded-full"
+                className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 rounded-full hover:bg-background/80"
                 onClick={() => onDeleteTodo(todo.id)}
               >
                 <X className="h-3.5 w-3.5" />
@@ -129,7 +133,7 @@ const TodoWidget: React.FC<TodoWidgetProps> = ({
         {/* Completed Todos */}
         {completedTodos.length > 0 && (
           <div className="space-y-0.5">
-            <h3 className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
+            <h3 className="text-xs font-medium text-muted-foreground mb-2">
               Completed
             </h3>
             {completedTodos.map((todo) => (
@@ -139,15 +143,15 @@ const TodoWidget: React.FC<TodoWidgetProps> = ({
                   type="checkbox"
                   checked={todo.completed}
                   onChange={() => onToggleTodo(todo.id)}
-                  className="mr-2 h-3.5 w-3.5 rounded-sm border border-gray-300 checked:bg-gray-400 checked:border-gray-400 focus:ring-0"
+                  className="mr-2 h-3.5 w-3.5 rounded-sm border border-muted-foreground checked:bg-muted-foreground checked:border-muted-foreground focus:ring-0"
                 />
-                <span className="flex-1 text-sm text-gray-400 line-through">
+                <span className="flex-1 text-sm text-muted-foreground line-through">
                   {todo.text}
                 </span>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 rounded-full"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 rounded-full hover:bg-background/80"
                   onClick={() => onDeleteTodo(todo.id)}
                 >
                   <X className="h-3.5 w-3.5" />
