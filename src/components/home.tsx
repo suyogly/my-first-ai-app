@@ -6,7 +6,7 @@ import SessionManager from "./session-manager/SessionManager";
 import PomodoroTimer from "./pomodoro/PomodoroTimer";
 import { TodoItem } from "./dashboard/TodoWidget";
 import { QuickAccessFolder } from "./dashboard/QuickAccessWidget";
-import { RecentLink } from "./dashboard/RecentLinksWidget";
+import { QuickLink } from "./dashboard/QuickLinksWidget";
 
 interface HomeProps {
   activeTab?: string;
@@ -16,12 +16,24 @@ interface HomeProps {
 const Home = ({ activeTab = "home", onTabChange = () => {} }: HomeProps) => {
   const [currentTab, setCurrentTab] = useState(activeTab);
   const [folders, setFolders] = useState<QuickAccessFolder[]>([
-    { id: "1", name: "Work", linkCount: 12 },
-    { id: "2", name: "Personal", linkCount: 8 },
-    { id: "3", name: "Research", linkCount: 15 },
-    { id: "4", name: "Reading List", linkCount: 6 },
-    { id: "5", name: "Projects", linkCount: 10 },
-    { id: "6", name: "Learning", linkCount: 9 },
+    {
+      id: "1",
+      name: "Work",
+      linkCount: 12,
+      links: [
+        { url: "https://github.com", title: "GitHub" },
+        { url: "https://jira.com", title: "Jira" },
+      ],
+    },
+    {
+      id: "2",
+      name: "Personal",
+      linkCount: 8,
+      links: [
+        { url: "https://gmail.com", title: "Gmail" },
+        { url: "https://calendar.google.com", title: "Calendar" },
+      ],
+    },
   ]);
 
   const [todos, setTodos] = useState<TodoItem[]>([
@@ -31,30 +43,26 @@ const Home = ({ activeTab = "home", onTabChange = () => {} }: HomeProps) => {
     { id: "4", text: "Send weekly progress report", completed: false },
   ]);
 
-  const [links, setLinks] = useState<RecentLink[]>([
+  const [links, setLinks] = useState<QuickLink[]>([
     {
       id: "1",
-      title: "Getting Started with React",
+      title: "React",
       url: "https://react.dev",
-      timestamp: "2 hours ago",
     },
     {
       id: "2",
-      title: "Tailwind CSS Documentation",
+      title: "Tailwind",
       url: "https://tailwindcss.com/docs",
-      timestamp: "3 hours ago",
     },
     {
       id: "3",
-      title: "ShadcnUI Components",
+      title: "Shadcn",
       url: "https://ui.shadcn.com",
-      timestamp: "5 hours ago",
     },
   ]);
 
   const handleFolderClick = (folderId: string) => {
-    // Navigate to folder contents or open folder view
-    console.log("Folder clicked:", folderId);
+    // Handled in QuickAccessWidget component
   };
 
   const handleAddFolder = () => {
@@ -62,8 +70,28 @@ const Home = ({ activeTab = "home", onTabChange = () => {} }: HomeProps) => {
       id: `folder-${Date.now()}`,
       name: `New Folder ${folders.length + 1}`,
       linkCount: 0,
+      links: [],
     };
     setFolders([...folders, newFolder]);
+  };
+
+  const handleAddLinks = (
+    folderId: string,
+    newLinks: { url: string; title: string }[],
+  ) => {
+    setFolders(
+      folders.map((folder) => {
+        if (folder.id === folderId) {
+          const existingLinks = folder.links || [];
+          return {
+            ...folder,
+            linkCount: existingLinks.length + newLinks.length,
+            links: [...existingLinks, ...newLinks],
+          };
+        }
+        return folder;
+      }),
+    );
   };
 
   const handleAddTodo = (text: string) => {
@@ -111,6 +139,7 @@ const Home = ({ activeTab = "home", onTabChange = () => {} }: HomeProps) => {
             links={links}
             onFolderClick={handleFolderClick}
             onAddFolder={handleAddFolder}
+            onAddLinks={handleAddLinks}
             onAddTodo={handleAddTodo}
             onDeleteTodo={handleDeleteTodo}
             onToggleTodo={handleToggleTodo}

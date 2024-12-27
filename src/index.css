@@ -6,81 +6,66 @@
 
 @layer base {
   :root {
-    /* Light mode - Warm earthy tones */
-    --warm-bg: 40 14% 95%; /* #f2efe9 */
-    --warm-fg: 35 12% 15%; /* #2d2925 - Darker for better contrast */
-    --warm-muted: 35 8% 85%; /* #e3e1dc */
-    --warm-accent: 35 15% 55%; /* #9e958a - More visible accent */
-    --warm-border: 35 10% 75%; /* #c9c5bd */
-    --warm-primary: 25 30% 40%; /* #7d6a5c - Richer primary */
+    /* Light mode - Much warmer and darker tones */
+    --background: 32 25% 95%; /* Lighter warm background */
+    --foreground: 30 20% 12%; /* Dark text */
 
-    --background: var(--warm-bg);
-    --foreground: var(--warm-fg);
+    --card: 32 25% 90%; /* Slightly darker than background */
+    --card-foreground: 30 20% 12%;
 
-    --card: var(--warm-muted);
-    --card-foreground: var(--warm-fg);
+    --popover: 32 25% 95%;
+    --popover-foreground: 30 20% 12%;
 
-    --popover: var(--warm-bg);
-    --popover-foreground: var(--warm-fg);
+    --primary: 25 35% 35%; /* Deep warm brown */
+    --primary-foreground: 32 25% 95%;
 
-    --primary: var(--warm-primary);
-    --primary-foreground: var(--warm-bg);
+    --secondary: 32 25% 85%; /* Slightly darker than background */
+    --secondary-foreground: 30 20% 12%;
 
-    --secondary: var(--warm-muted);
-    --secondary-foreground: var(--warm-fg);
+    --muted: 32 25% 85%;
+    --muted-foreground: 30 15% 35%; /* Softer muted text */
 
-    --muted: var(--warm-muted);
-    --muted-foreground: var(--warm-accent);
-
-    --accent: var(--warm-accent);
-    --accent-foreground: var(--warm-fg);
+    --accent: 32 25% 85%;
+    --accent-foreground: 30 20% 12%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: var(--warm-bg);
+    --destructive-foreground: 32 25% 95%;
 
-    --border: var(--warm-border);
-    --input: var(--warm-border);
-    --ring: var(--warm-primary);
+    --border: 30 15% 75%; /* Warm border color */
+    --input: 30 15% 75%;
+    --ring: 25 35% 35%;
 
     --radius: 0.5rem;
   }
 
   .dark {
-    /* Dark mode - Deep warm tones */
-    --warm-bg: 200 25% 15%; /* #1a2429 */
-    --warm-fg: 35 15% 95%; /* #f3efea */
-    --warm-muted: 200 15% 25%; /* #2d3b44 */
-    --warm-accent: 200 20% 65%; /* #8cabc2 - Brighter accent */
-    --warm-border: 200 15% 30%; /* #364956 */
-    --warm-primary: 170 35% 55%; /* #45c4b1 - Brighter primary */
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
 
-    --background: var(--warm-bg);
-    --foreground: var(--warm-fg);
+    --card: 20 14.3% 4.1%;
+    --card-foreground: 60 9.1% 97.8%;
 
-    --card: var(--warm-muted);
-    --card-foreground: var(--warm-fg);
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
 
-    --popover: var(--warm-bg);
-    --popover-foreground: var(--warm-fg);
+    --primary: 47.9 95.8% 53.1%;
+    --primary-foreground: 26 83.3% 14.1%;
 
-    --primary: var(--warm-primary);
-    --primary-foreground: var(--warm-bg);
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
 
-    --secondary: var(--warm-muted);
-    --secondary-foreground: var(--warm-fg);
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
 
-    --muted: var(--warm-muted);
-    --muted-foreground: var(--warm-accent);
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
 
-    --accent: var(--warm-accent);
-    --accent-foreground: var(--warm-fg);
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: var(--warm-bg);
-
-    --border: var(--warm-border);
-    --input: var(--warm-border);
-    --ring: var(--warm-primary);
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 35.5 91.7% 32.9%;
   }
 }
 
@@ -91,40 +76,4 @@
   body {
     @apply bg-background text-foreground;
   }
-}
-
-/* Clock styles */
-.digital-clock {
-  font-family: "JetBrains Mono", monospace;
-  position: relative;
-  padding: 1.5rem 2.5rem;
-  border-radius: 1.25rem;
-  background: linear-gradient(145deg, hsl(var(--card)), hsl(var(--background)));
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.05),
-    0 2px 4px -1px rgba(0, 0, 0, 0.03),
-    inset 0 2px 4px rgba(255, 255, 255, 0.1);
-}
-
-.digital-clock .time {
-  font-size: 3.5rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  color: hsl(var(--foreground));
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.digital-clock .date {
-  font-size: 0.875rem;
-  color: hsl(var(--accent));
-  margin-top: 0.5rem;
-  text-align: center;
-  font-weight: 500;
-}
-
-.dark .digital-clock {
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.2),
-    0 2px 4px -1px rgba(0, 0, 0, 0.1),
-    inset 0 2px 4px rgba(255, 255, 255, 0.05);
 }

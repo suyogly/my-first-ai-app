@@ -1,14 +1,15 @@
 import React from "react";
 import QuickAccessWidget, { QuickAccessFolder } from "./QuickAccessWidget";
-import RecentLinksWidget, { RecentLink } from "./RecentLinksWidget";
+import QuickLinksWidget, { QuickLink } from "./QuickLinksWidget";
 import TodoWidget, { TodoItem } from "./TodoWidget";
 
 interface DashboardGridProps {
   folders?: QuickAccessFolder[];
   todos?: TodoItem[];
-  links?: RecentLink[];
+  links?: QuickLink[];
   onFolderClick?: (folderId: string) => void;
   onAddFolder?: () => void;
+  onAddLinks?: (folderId: string) => void;
   onAddTodo?: (text: string) => void;
   onDeleteTodo?: (id: string) => void;
   onToggleTodo?: (id: string) => void;
@@ -21,6 +22,7 @@ const DashboardGrid = ({
   links,
   onFolderClick = () => {},
   onAddFolder = () => {},
+  onAddLinks = () => {},
   onAddTodo = () => {},
   onDeleteTodo = () => {},
   onToggleTodo = () => {},
@@ -28,18 +30,19 @@ const DashboardGrid = ({
 }: DashboardGridProps) => {
   return (
     <div className="w-full min-h-screen bg-background">
-      <div className="w-[90%] mx-auto px-8 py-6 flex gap-12">
+      <div className="max-w-7xl mx-auto px-4 py-6 flex flex-wrap justify-center gap-6">
         {/* Quick Access - Left */}
-        <div className="w-72 bg-card/50 p-6 rounded-xl border border-border/50">
+        <div className="w-72 min-w-[280px] shrink bg-card/50 p-6 rounded-xl border border-border/50">
           <QuickAccessWidget
             folders={folders}
             onFolderClick={onFolderClick}
             onAddFolder={onAddFolder}
+            onAddLinks={onAddLinks}
           />
         </div>
 
         {/* Todo Section - Center */}
-        <div className="flex-1 bg-card/50 p-6 rounded-xl border border-border/50">
+        <div className="w-[400px] min-w-[380px] bg-card/50 p-6 rounded-xl border border-border/50">
           <TodoWidget
             todos={todos}
             onAddTodo={onAddTodo}
@@ -49,9 +52,9 @@ const DashboardGrid = ({
           />
         </div>
 
-        {/* Recent Links - Right */}
-        <div className="w-72 bg-card/50 p-6 rounded-xl border border-border/50">
-          <RecentLinksWidget links={links} />
+        {/* Quick Links - Right */}
+        <div className="w-72 min-w-[280px] shrink bg-card/50 p-6 rounded-xl border border-border/50">
+          <QuickLinksWidget links={links} />
         </div>
       </div>
     </div>
