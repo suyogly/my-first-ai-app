@@ -3,28 +3,27 @@ import { Button } from "@/components/ui/button";
 import { Folder, Plus, Pencil } from "lucide-react";
 import AddLinksDialog from "./AddLinksDialog";
 
+export interface Link {
+  url: string;
+  title: string;
+}
+
 export interface QuickAccessFolder {
   id: string;
   name: string;
-  linkCount: number;
-  links?: { url: string; title: string }[];
+  links: Link[];
 }
 
 interface QuickAccessWidgetProps {
   folders?: QuickAccessFolder[];
-  onFolderClick?: (folderId: string) => void;
   onAddFolder?: () => void;
-  onAddLinks?: (
-    folderId: string,
-    links: { url: string; title: string }[],
-  ) => void;
+  onAddLinks?: (folderId: string, links: Link[]) => void;
 }
 
 const defaultFolders: QuickAccessFolder[] = [
   {
     id: "1",
     name: "Work",
-    linkCount: 12,
     links: [
       { url: "https://github.com", title: "GitHub" },
       { url: "https://jira.com", title: "Jira" },
@@ -33,7 +32,6 @@ const defaultFolders: QuickAccessFolder[] = [
   {
     id: "2",
     name: "Personal",
-    linkCount: 8,
     links: [
       { url: "https://gmail.com", title: "Gmail" },
       { url: "https://calendar.google.com", title: "Calendar" },
@@ -43,26 +41,50 @@ const defaultFolders: QuickAccessFolder[] = [
 
 const QuickAccessWidget = ({
   folders = defaultFolders,
-  onFolderClick = () => {},
   onAddFolder = () => {},
   onAddLinks = () => {},
 }: QuickAccessWidgetProps) => {
   const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const handleFolderClick = (folder: QuickAccessFolder) => {
-    if (folder.links?.length) {
-      // Open first link in a new window
-      const newWindow = window.open(folder.links[0].url, folder.name);
+  const openLinksInNewWindow = (links: Link[]) => {
+    if (links.length === 0) return;
 
-      // Open remaining links in the same window
-      if (newWindow && folder.links.length > 1) {
-        folder.links.slice(1).forEach((link) => {
+    const windowFeatures = [
+      "toolbar=yes",
+      "location=yes",
+      "directories=yes",
+      "status=yes",
+      "menubar=yes",
+      "scrollbars=yes",
+      "resizable=yes",
+      "width=1200",
+      "height=800",
+      "left=100",
+      "top=100",
+    ].join(",");
+
+    // Open first link in a new window with all features
+    const newWindow = window.open(links[0].url, "_blank", windowFeatures);
+
+    // If window was successfully opened, open remaining links as tabs
+    if (newWindow) {
+      // Focus the new window
+      newWindow.focus();
+
+      // Open remaining links as tabs in that window after a short delay
+      setTimeout(() => {
+        links.slice(1).forEach((link) => {
           newWindow.open(link.url);
         });
-      }
+      }, 1000);
     }
-    onFolderClick(folder.id);
+  };
+
+  const handleFolderClick = (folder: QuickAccessFolder) => {
+    if (folder.links.length > 0) {
+      openLinksInNewWindow(folder.links);
+    }
   };
 
   const handleAddLinksClick = (folderId: string) => {
@@ -75,7 +97,7 @@ const QuickAccessWidget = ({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-foreground">Folders</h2>
+        <h2 className="text-sm font-medium text-foreground">Quick Access</h2>
         <Button
           variant="ghost"
           size="icon"
@@ -85,6 +107,7 @@ const QuickAccessWidget = ({
           <Plus className="h-3.5 w-3.5" />
         </Button>
       </div>
+
       <div className="space-y-1">
         {folders.map((folder) => (
           <div key={folder.id} className="group relative">
@@ -97,6 +120,9 @@ const QuickAccessWidget = ({
                 {folder.name.length > 15
                   ? `${folder.name.slice(0, 12)}...`
                   : folder.name}
+                <span className="ml-1 text-xs text-muted-foreground">
+                  ({folder.links.length})
+                </span>
               </span>
             </button>
             <Button

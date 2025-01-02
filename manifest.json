@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "New Tab Productivity Manager",
+  "version": "1.0.0",
+  "description": "Transform your new tab into a productivity hub",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  }
+}

@@ -9,7 +9,10 @@ interface DashboardGridProps {
   links?: QuickLink[];
   onFolderClick?: (folderId: string) => void;
   onAddFolder?: () => void;
-  onAddLinks?: (folderId: string) => void;
+  onAddLinks?: (
+    folderId: string,
+    links: { url: string; title: string }[],
+  ) => void;
   onAddTodo?: (text: string) => void;
   onDeleteTodo?: (id: string) => void;
   onToggleTodo?: (id: string) => void;
@@ -35,7 +38,6 @@ const DashboardGrid = ({
         <div className="w-72 min-w-[280px] shrink bg-card/50 p-6 rounded-xl border border-border/50">
           <QuickAccessWidget
             folders={folders}
-            onFolderClick={onFolderClick}
             onAddFolder={onAddFolder}
             onAddLinks={onAddLinks}
           />
