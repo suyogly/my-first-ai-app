@@ -11,6 +11,7 @@ export interface Link {
 export interface QuickAccessFolder {
   id: string;
   name: string;
+  linkCount: number;
   links: Link[];
 }
 
@@ -24,6 +25,7 @@ const defaultFolders: QuickAccessFolder[] = [
   {
     id: "1",
     name: "Work",
+    linkCount: 2,
     links: [
       { url: "https://github.com", title: "GitHub" },
       { url: "https://jira.com", title: "Jira" },
@@ -32,6 +34,7 @@ const defaultFolders: QuickAccessFolder[] = [
   {
     id: "2",
     name: "Personal",
+    linkCount: 2,
     links: [
       { url: "https://gmail.com", title: "Gmail" },
       { url: "https://calendar.google.com", title: "Calendar" },
