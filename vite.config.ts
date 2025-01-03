@@ -6,22 +6,23 @@ import fs from "fs";
 
 const copyManifest = () => {
   return {
-    name: 'copy-manifest',
+    name: "copy-manifest",
     buildEnd() {
-      // Read the manifest file
-      const manifest = JSON.parse(fs.readFileSync('manifest.json', 'utf-8'));
-      
-      // Ensure the extension directory exists
-      if (!fs.existsSync('extension')) {
-        fs.mkdirSync('extension');
+      try {
+        const manifest = JSON.parse(fs.readFileSync("manifest.json", "utf-8"));
+
+        if (!fs.existsSync("extension")) {
+          fs.mkdirSync("extension", { recursive: true });
+        }
+
+        fs.writeFileSync(
+          "extension/manifest.json",
+          JSON.stringify(manifest, null, 2),
+        );
+      } catch (error) {
+        console.error("Error copying manifest:", error);
       }
-      
-      // Write the manifest to the extension directory
-      fs.writeFileSync(
-        'extension/manifest.json',
-        JSON.stringify(manifest, null, 2)
-      );
-    }
+    },
   };
 };
 
@@ -32,27 +33,34 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       output: {
-        format: "es",
-        entryFileNames: `assets/[name].js`,
-        chunkFileNames: `assets/[name].js`,
-        assetFileNames: `assets/[name].[ext]`
+        format: "iife",
+        entryFileNames: `assets/[name].[hash].js`,
+        chunkFileNames: `assets/[name].[hash].js`,
+        assetFileNames: `assets/[name].[hash].[ext]`,
       },
     },
+    sourcemap: false,
+    minify: true,
   },
-  plugins:[
-      {
-        name: "adjust-permissions",
-        writeBundle() {
+  plugins: [
+    {
+      name: "adjust-permissions",
+      writeBundle() {
+        try {
           fs.chmodSync("extension", 0o755); // Directory permissions
-          fs.readdirSync("extension/assets").forEach((file) => {
-            fs.chmodSync(`extension/assets/${file}`, 0o644); // File permissions
-          });
-        },
+          if (fs.existsSync("extension/assets")) {
+            fs.readdirSync("extension/assets").forEach((file) => {
+              fs.chmodSync(`extension/assets/${file}`, 0o644); // File permissions
+            });
+          }
+        } catch (error) {
+          console.error("Error adjusting permissions:", error);
+        }
       },
-    
+    },
     react(),
     tempo(),
-    copyManifest()
+    copyManifest(),
   ],
   publicDir: "public",
   resolve: {
@@ -61,4 +69,14 @@ export default defineConfig({
     },
   },
   assetsInclude: ["**/*.png"],
+  server: {
+    headers: {
+      "Cross-Origin-Embedder-Policy": "require-corp",
+      "Cross-Origin-Opener-Policy": "same-origin",
+      "Cross-Origin-Resource-Policy": "same-origin",
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-XSS-Protection": "1; mode=block",
+    },
+  },
 });
