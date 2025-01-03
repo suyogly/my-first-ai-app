@@ -1,19 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
 import "./index.css";
-import { HashRouter } from "react-router-dom"; // Change to HashRouter
-import { ThemeProvider } from "@/components/theme-provider";
 import { TempoDevtools } from "tempo-devtools";
+import { ThemeProvider } from "./components/theme-provider";
 
+// Initialize Tempo Devtools
 TempoDevtools.init();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThemeProvider defaultTheme="light" storageKey="app-theme">
-      <HashRouter> {/* Remove basename prop */}
+    <BrowserRouter>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <App />
-      </HashRouter>
-    </ThemeProvider>
-  </React.StrictMode>
+      </ThemeProvider>
+    </BrowserRouter>
+  </React.StrictMode>,
 );
