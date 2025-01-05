@@ -1,157 +1,253 @@
-import React, { useState } from "react";
-import TabNav from "./navigation/TabNav";
-import DashboardGrid from "./dashboard/DashboardGrid";
-import SiteManager from "./site-manager/SiteManager";
-import SessionManager from "./session-manager/SessionManager";
-import PomodoroTimer from "./pomodoro/PomodoroTimer";
-import { TodoItem } from "./dashboard/TodoWidget";
-import { QuickAccessFolder } from "./dashboard/QuickAccessWidget";
-import { QuickLink } from "./dashboard/QuickLinksWidget";
+import { useState } from "react";
+import {
+  ChevronDown,
+  ChevronRight,
+  Plus,
+  Pencil,
+  Trash2,
+  Link as LinkIcon,
+} from "lucide-react";
+import { Button } from "./ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
-interface HomeProps {
-  activeTab?: string;
-  onTabChange?: (value: string) => void;
-}
+type Folder = {
+  id: string;
+  name: string;
+  links: Link[];
+};
 
-const Home = ({ activeTab = "home", onTabChange = () => {} }: HomeProps) => {
-  const [currentTab, setCurrentTab] = useState(activeTab);
-  const [folders, setFolders] = useState<QuickAccessFolder[]>([
-    {
-      id: "1",
-      name: "Work",
-      linkCount: 12,
-      links: [
-        { url: "https://github.com", title: "GitHub" },
-        { url: "https://jira.com", title: "Jira" },
-      ],
-    },
-    {
-      id: "2",
-      name: "Personal",
-      linkCount: 8,
-      links: [
-        { url: "https://gmail.com", title: "Gmail" },
-        { url: "https://calendar.google.com", title: "Calendar" },
-      ],
-    },
-  ]);
+type Link = {
+  id: string;
+  url: string;
+  title: string;
+  folderId: string;
+};
 
-  const [todos, setTodos] = useState<TodoItem[]>([
-    { id: "1", text: "Review project documentation", completed: false },
-    { id: "2", text: "Update team meeting notes", completed: true },
-    { id: "3", text: "Prepare presentation slides", completed: false },
-    { id: "4", text: "Send weekly progress report", completed: false },
-  ]);
+export default function Home() {
+  const [folders, setFolders] = useState<Folder[]>(() => {
+    const saved = localStorage.getItem("folders");
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  const [links, setLinks] = useState<QuickLink[]>([
-    {
-      id: "1",
-      title: "React",
-      url: "https://react.dev",
-    },
-    {
-      id: "2",
-      title: "Tailwind",
-      url: "https://tailwindcss.com/docs",
-    },
-    {
-      id: "3",
-      title: "Shadcn",
-      url: "https://ui.shadcn.com",
-    },
-  ]);
-
-  const handleFolderClick = (folderId: string) => {
-    // Handled in QuickAccessWidget component
-  };
+  const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
+  const [isNewFolderDialogOpen, setIsNewFolderDialogOpen] = useState(false);
+  const [isNewLinkDialogOpen, setIsNewLinkDialogOpen] = useState(false);
+  const [newFolder, setNewFolder] = useState({ name: "" });
+  const [newLink, setNewLink] = useState({ title: "", url: "" });
 
   const handleAddFolder = () => {
-    const newFolder: QuickAccessFolder = {
-      id: `folder-${Date.now()}`,
-      name: `New Folder ${folders.length + 1}`,
-      linkCount: 0,
-      links: [],
-    };
-    setFolders([...folders, newFolder]);
+    if (newFolder.name) {
+      const folder: Folder = {
+        id: Date.now().toString(),
+        name: newFolder.name,
+        links: [],
+      };
+      setFolders([...folders, folder]);
+      setNewFolder({ name: "" });
+      setIsNewFolderDialogOpen(false);
+      localStorage.setItem("folders", JSON.stringify([...folders, folder]));
+    }
   };
 
-  const handleAddLinks = (
-    folderId: string,
-    newLinks: { url: string; title: string }[],
-  ) => {
-    setFolders(
-      folders.map((folder) => {
-        if (folder.id === folderId) {
-          const existingLinks = folder.links || [];
-          return {
-            ...folder,
-            linkCount: existingLinks.length + newLinks.length,
-            links: [...existingLinks, ...newLinks],
-          };
+  const handleAddLink = () => {
+    if (newLink.title && newLink.url && selectedFolder) {
+      const link: Link = {
+        id: Date.now().toString(),
+        ...newLink,
+        folderId: selectedFolder,
+      };
+      const updatedFolders = folders.map((folder) => {
+        if (folder.id === selectedFolder) {
+          return { ...folder, links: [...folder.links, link] };
         }
         return folder;
-      }),
-    );
+      });
+      setFolders(updatedFolders);
+      setNewLink({ title: "", url: "" });
+      setIsNewLinkDialogOpen(false);
+      localStorage.setItem("folders", JSON.stringify(updatedFolders));
+    }
   };
 
-  const handleAddTodo = (text: string) => {
-    const newTodo: TodoItem = {
-      id: `todo-${Date.now()}`,
-      text,
-      completed: false,
-    };
-    setTodos([...todos, newTodo]);
+  const handleDeleteFolder = (folderId: string) => {
+    const updatedFolders = folders.filter((f) => f.id !== folderId);
+    setFolders(updatedFolders);
+    if (selectedFolder === folderId) setSelectedFolder(null);
+    localStorage.setItem("folders", JSON.stringify(updatedFolders));
   };
 
-  const handleDeleteTodo = (id: string) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
-
-  const handleToggleTodo = (id: string) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-      ),
-    );
-  };
-
-  const handleReorderTodos = (startIndex: number, endIndex: number) => {
-    const newTodos = [...todos];
-    const [removed] = newTodos.splice(startIndex, 1);
-    newTodos.splice(endIndex, 0, removed);
-    setTodos(newTodos);
-  };
-
-  const handleTabChange = (value: string) => {
-    setCurrentTab(value);
-    onTabChange(value);
+  const handleDeleteLink = (folderId: string, linkId: string) => {
+    const updatedFolders = folders.map((folder) => {
+      if (folder.id === folderId) {
+        return {
+          ...folder,
+          links: folder.links.filter((link) => link.id !== linkId),
+        };
+      }
+      return folder;
+    });
+    setFolders(updatedFolders);
+    localStorage.setItem("folders", JSON.stringify(updatedFolders));
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <TabNav activeTab={currentTab} onTabChange={handleTabChange} />
+    <div className="grid grid-cols-[300px_1fr] gap-6 py-6">
+      {/* Folders Column */}
+      <div className="bg-card/50 p-4 rounded-xl border border-border/50">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold">Folders</h2>
+          <Dialog
+            open={isNewFolderDialogOpen}
+            onOpenChange={setIsNewFolderDialogOpen}
+          >
+            <DialogTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Plus className="w-4 h-4" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>New Folder</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 py-4">
+                <div className="space-y-2">
+                  <Label>Name</Label>
+                  <Input
+                    value={newFolder.name}
+                    onChange={(e) => setNewFolder({ name: e.target.value })}
+                    placeholder="Folder name"
+                  />
+                </div>
+                <Button onClick={handleAddFolder}>Create Folder</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+        <div className="space-y-2">
+          {folders.map((folder) => (
+            <div
+              key={folder.id}
+              className={`flex items-center justify-between p-2 rounded-lg cursor-pointer hover:bg-accent/50 ${selectedFolder === folder.id ? "bg-accent" : ""}`}
+              onClick={() =>
+                setSelectedFolder(
+                  folder.id === selectedFolder ? null : folder.id,
+                )
+              }
+            >
+              <div className="flex items-center space-x-2">
+                {selectedFolder === folder.id ? (
+                  <ChevronDown className="w-4 h-4" />
+                ) : (
+                  <ChevronRight className="w-4 h-4" />
+                )}
+                <span>{folder.name}</span>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="opacity-0 group-hover:opacity-100"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteFolder(folder.id);
+                }}
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            </div>
+          ))}
+        </div>
+      </div>
 
-      <main className="flex-1 overflow-auto">
-        {currentTab === "home" && (
-          <DashboardGrid
-            folders={folders}
-            todos={todos}
-            links={links}
-            onFolderClick={handleFolderClick}
-            onAddFolder={handleAddFolder}
-            onAddLinks={handleAddLinks}
-            onAddTodo={handleAddTodo}
-            onDeleteTodo={handleDeleteTodo}
-            onToggleTodo={handleToggleTodo}
-            onReorderTodos={handleReorderTodos}
-          />
+      {/* Links Column */}
+      <div className="bg-card/50 p-4 rounded-xl border border-border/50">
+        {selectedFolder ? (
+          <>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">
+                {folders.find((f) => f.id === selectedFolder)?.name} Links
+              </h2>
+              <Dialog
+                open={isNewLinkDialogOpen}
+                onOpenChange={setIsNewLinkDialogOpen}
+              >
+                <DialogTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Plus className="w-4 h-4" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Add Link</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <Label>Title</Label>
+                      <Input
+                        value={newLink.title}
+                        onChange={(e) =>
+                          setNewLink({ ...newLink, title: e.target.value })
+                        }
+                        placeholder="Link title"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>URL</Label>
+                      <Input
+                        value={newLink.url}
+                        onChange={(e) =>
+                          setNewLink({ ...newLink, url: e.target.value })
+                        }
+                        placeholder="https://example.com"
+                      />
+                    </div>
+                    <Button onClick={handleAddLink}>Add Link</Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+            <div className="space-y-2">
+              {folders
+                .find((f) => f.id === selectedFolder)
+                ?.links.map((link) => (
+                  <div
+                    key={link.id}
+                    className="flex items-center justify-between p-2 rounded-lg hover:bg-accent/50 group"
+                  >
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center space-x-2 flex-1"
+                    >
+                      <LinkIcon className="w-4 h-4" />
+                      <span>{link.title}</span>
+                    </a>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="opacity-0 group-hover:opacity-100"
+                      onClick={() => handleDeleteLink(selectedFolder, link.id)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+            </div>
+          </>
+        ) : (
+          <div className="flex items-center justify-center h-full text-muted-foreground">
+            Select a folder to view links
+          </div>
         )}
-        {currentTab === "site-manager" && <SiteManager />}
-        {currentTab === "session-manager" && <SessionManager />}
-        {currentTab === "pomodoro" && <PomodoroTimer />}
-      </main>
+      </div>
     </div>
   );
-};
-
-export default Home;
+}
